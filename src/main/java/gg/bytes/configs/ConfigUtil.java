@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class ConfigUtil {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static <C extends IConfig> C load(File file, Class<C> type, Supplier<C> supplier) throws IOException, ConfigException {
+    public static <C extends IConfig> C load(File file, Class<C> type, Supplier<C> supplier) throws ConfigException {
         C config;
 
         try (FileReader reader = new FileReader(file)) {
@@ -26,9 +26,11 @@ public class ConfigUtil {
         return config;
     }
 
-    public static void save(File file, IConfig config) throws IOException {
+    public static void save(File file, IConfig config) throws ConfigException {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(gson.toJson(config));
+        } catch (IOException ex) {
+            throw new ConfigException(ex);
         }
     }
 }
