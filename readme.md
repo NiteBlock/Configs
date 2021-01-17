@@ -15,22 +15,17 @@ import java.util.UUID;
 public class Server {
     private Config config;
 
-    public Server() {
+    public Server() throws ConfigException {
         this.config = ConfigUtil.load(new File("config.json"), Config.class, Config::new);
     }
 
-    public void save() {
+    public void save() throws ConfigException {
         ConfigUtil.save(new File("config.json"), this.config);
     }
 
     public static class Config implements IConfig {
         private String name;
         private List<UUID> owners;
-
-        public Config() {
-            this.name = "";
-            this.owners = new ArrayList<>();
-        }
 
         @Override
         public void validate() throws ConfigException {
